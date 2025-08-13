@@ -162,8 +162,11 @@ public class S101Configurer {
 
 	private String installBuildTool(File installationDirectory, File configurationDirectory) {
 		String source = "https://structure101.com/binaries/v6";
-		try (final WebClient webClient = new WebClient()) {
-			HtmlPage page = webClient.getPage(source);
+        try (final WebClient webClient = new WebClient()) {
+            webClient.getOptions().setJavaScriptEnabled(false);
+            webClient.getOptions().setCssEnabled(false);
+            // webClient.getOptions().setThrowExceptionOnScriptError(false);
+            HtmlPage page = webClient.getPage(source);
 			Matcher matcher = null;
 			for (HtmlAnchor anchor : page.getAnchors()) {
 				Matcher candidate = Pattern.compile("(structure101-build-java-all-)(.*).zip").matcher(anchor.getHrefAttribute());
