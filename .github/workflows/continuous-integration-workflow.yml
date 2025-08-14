@@ -63,7 +63,7 @@ jobs:
           GRADLE_ENTERPRISE_CACHE_USERNAME: ${{ secrets.GRADLE_ENTERPRISE_CACHE_USER }}
           GRADLE_ENTERPRISE_CACHE_PASSWORD: ${{ secrets.GRADLE_ENTERPRISE_CACHE_PASSWORD }}
           GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_SECRET_ACCESS_KEY }}
-        run: ./gradlew clean build --continue --stacktrace --warning-mode all --no-scan -PartifactoryUsername="$ARTIFACTORY_USERNAME" -PartifactoryPassword="$ARTIFACTORY_PASSWORD"
+        run: ./gradlew clean build --continue --stacktrace -PartifactoryUsername="$ARTIFACTORY_USERNAME" -PartifactoryPassword="$ARTIFACTORY_PASSWORD"
       - name: Upload Maven build artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -86,7 +86,7 @@ jobs:
           export GRADLE_ENTERPRISE_CACHE_USERNAME="$GRADLE_ENTERPRISE_CACHE_USER"
           export GRADLE_ENTERPRISE_CACHE_PASSWORD="$GRADLE_ENTERPRISE_CACHE_PASSWORD"
           export GRADLE_ENTERPRISE_ACCESS_KEY="$GRADLE_ENTERPRISE_SECRET_ACCESS_KEY"
-          ./gradlew test --refresh-dependencies -PartifactoryUsername="$ARTIFACTORY_USERNAME" -PartifactoryPassword="$ARTIFACTORY_PASSWORD" -PforceMavenRepositories=snapshot -PspringVersion='5.+' -PreactorVersion='20+' -PspringDataVersion='Neumann-BUILD-SNAPSHOT' -PrsocketVersion=1.1.0-SNAPSHOT -PspringBootVersion=2.4.0-SNAPSHOT -PlocksDisabled --stacktrace --warning-mode all --no-scan
+          ./gradlew test --refresh-dependencies -PartifactoryUsername="$ARTIFACTORY_USERNAME" -PartifactoryPassword="$ARTIFACTORY_PASSWORD" -PforceMavenRepositories=snapshot -PspringVersion='5.+' -PreactorVersion='20+' -PspringDataVersion='Neumann-BUILD-SNAPSHOT' -PrsocketVersion=1.1.0-SNAPSHOT -PspringBootVersion=2.4.0-SNAPSHOT -PlocksDisabled --stacktrace
   check_samples:
     name: Check Samples project
     needs: [prerequisites]
@@ -110,4 +110,4 @@ jobs:
           export GRADLE_ENTERPRISE_ACCESS_KEY="$GRADLE_ENTERPRISE_SECRET_ACCESS_KEY"
           ./gradlew publishMavenJavaPublicationToLocalRepository
           ./gradlew cloneSamples -PcloneOutputDirectory="$SAMPLES_DIR"
-          ./gradlew --project-dir "$SAMPLES_DIR" --init-script spring-security-ci.gradle -PlocalRepositoryPath="$LOCAL_REPOSITORY_PATH" -PspringSecurityVersion="$VERSION" -PartifactoryUsername="$ARTIFACTORY_USERNAME" -PartifactoryPassword="$ARTIFACTORY_PASSWORD" :runAllTests --stacktrace --warning-mode all --no-scan
+          ./gradlew --project-dir "$SAMPLES_DIR" --init-script spring-security-ci.gradle -PlocalRepositoryPath="$LOCAL_REPOSITORY_PATH" -PspringSecurityVersion="$VERSION" -PartifactoryUsername="$ARTIFACTORY_USERNAME" -PartifactoryPassword="$ARTIFACTORY_PASSWORD" :runAllTests --stacktrace
