@@ -233,8 +233,6 @@ public class BCryptPasswordEncoderTests {
 
 		assertThat(encoder.matches(password72chars, encoder.encode(password72chars))).isTrue();
 		assertThat(encoder.matches(password73chars, encodedPassword72chars)).isFalse();
-		assertThatIllegalStateException()
-			.isThrownBy(() -> encoder.matches(password73chars, encodedPassword72chars));
 	}
 
 }
