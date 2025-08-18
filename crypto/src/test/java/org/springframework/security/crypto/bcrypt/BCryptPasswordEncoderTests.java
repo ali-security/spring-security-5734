@@ -100,7 +100,7 @@ public class BCryptPasswordEncoderTests {
 	public void $2aNotMatches() {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(BCryptPasswordEncoder.BCryptVersion.$2A);
 		String result = encoder.encode("password");
-		assertThat(encoder.matches("bogus", result)).isTrue();
+		assertThat(encoder.matches("bogus", result)).isFalse();
 	}
 
 	@Test
@@ -227,10 +227,14 @@ public class BCryptPasswordEncoderTests {
 	public void enforcePasswordLength() {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		String password72chars = "123456789012345678901234567890123456789012345678901234567890123456789012";
-		assertThat(encoder.matches(password72chars, encoder.encode(password72chars))).isTrue();
 		String password73chars = password72chars.concat("a");
+
+		String encodedPassword72chars = encoder.encode(password72chars);
+
+		assertThat(encoder.matches(password72chars, encoder.encode(password72chars))).isTrue();
+		assertThat(encoder.matches(password73chars, encodedPassword72chars)).isTrue();
 		assertThatIllegalStateException()
-			.isThrownBy(() -> encoder.matches(password73chars, encoder.encode(password73chars)));
+			.isThrownBy(() -> encoder.matches(password73chars, encodedPassword72chars));
 	}
 
 }
